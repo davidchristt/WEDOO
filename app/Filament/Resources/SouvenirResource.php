@@ -28,7 +28,6 @@ class SouvenirResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('id_Souvenir')->required(),
                 TextInput::make('nama')->required(),
                 TextInput::make('jenis')->required(),
                 TextInput::make('harga')->numeric()->required(),
@@ -47,10 +46,26 @@ class SouvenirResource extends Resource
                 TextColumn::make('nama')->sortable()->searchable(),
                 TextColumn::make('jenis')->sortable()->searchable(),
                 TextColumn::make('harga')->sortable(),
-                TextColumn::make('ketersediaan')->sortable(),
+                TextColumn::make('ketersediaan')
+                                ->badge()
+                                ->color(fn (string $state): string => match ($state) {
+                                    'Tunggu' => 'gray',
+                                    'habis' => 'warning',
+                                    'tersedia' => 'success',
+                                })
             ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

@@ -4,29 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateMcsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('m_c_s', function (Blueprint $table) {
-            $table->char('id_MC', 36)->primary();
+        Schema::create('mcs', function (Blueprint $table) {
+            $table->char('id_mc', 10)->primary();
             $table->string('nama');
-            $table->string('Kontak');
-            $table->integer('biaya');
+            $table->string('kontak');
+            $table->decimal('biaya', 10, 2);
             $table->string('ketersediaan');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('m_c_s');
+        Schema::dropIfExists('mcs');
     }
-};
+}

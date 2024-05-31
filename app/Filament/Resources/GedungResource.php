@@ -29,7 +29,6 @@ class GedungResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('id_gedung')->required(),
                 TextInput::make('nama_gedung')->required(),
                 TextInput::make('luas')->numeric()->required(),
                 TextInput::make('kapasitas')->numeric()->required(),
@@ -54,6 +53,16 @@ class GedungResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

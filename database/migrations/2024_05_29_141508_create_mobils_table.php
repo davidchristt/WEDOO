@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_mobil');
             $table->string('merk');
             $table->integer('kapasitas');
-            $table->integer('biaya');
+            $table->integer('harga');
             $table->timestamps();
         });
     }

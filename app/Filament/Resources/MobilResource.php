@@ -25,13 +25,12 @@ class MobilResource extends Resource
 {
     protected static ?string $model = Mobil::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('id_Mobil')->required(),
                 TextInput::make('nama_mobil')->required(),
                 TextInput::make('merk')->required(),
                 TextInput::make('kapasitas')->numeric()->required(),
@@ -43,9 +42,9 @@ class MobilResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id_Mobil')->sortable(),
+                TextColumn::make('id_mobil')->sortable(),
                 TextColumn::make('nama_mobil')->sortable()->searchable(),
-                TextColumn::make('merek')->sortable()->searchable(),
+                TextColumn::make('merk')->sortable()->searchable(),
                 TextColumn::make('kapasitas')->sortable(),
                 TextColumn::make('harga')->sortable(),
             ])
@@ -54,10 +53,12 @@ class MobilResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

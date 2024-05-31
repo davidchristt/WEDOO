@@ -28,7 +28,6 @@ class FasilitasResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('id_fasilitas')->required(),
                 TextInput::make('nama_fasilitas')->required(),
                 TextInput::make('luas')->numeric()->required(),
                 TextInput::make('kapasitas')->numeric()->required(),
@@ -47,6 +46,16 @@ class FasilitasResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
