@@ -8,11 +8,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="bg-slate-200 dark:bg-slate-700">
-    @livewire('partial.navbar')
-        <main>
-            {{ $slot }}
-        </main>
+    <body class="bg-slate-200">
+        @livewire('partial.navbar')
+            <main class="flex-1 p-4">
+                {{ $slot }}
+            </main>
         @livewireScripts
     </body>
 </html>
