@@ -3,8 +3,8 @@
 // app/Models/Vendor.php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vendor extends Model
 {
@@ -15,7 +15,7 @@ class Vendor extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id_vendor', 'id_venue', 'id_souvenir', 'id_penghulu', 'id_mc', 'id_mobil',
+        'id_vendor', 'nama' ,'id_venue', 'id_souvenir', 'id_penghulu', 'id_mc', 'id_mobil',
         'id_akomodasi', 'id_dokumentasi', 'id_catering', 'id_entertainment','id_perias'
     ];
 

@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SouvenirResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -34,6 +35,7 @@ class SouvenirResource extends Resource
                 Select::make('ketersediaan')
                     ->options(Souvenir::KETERSEDIAAN_OPSI)
                     ->required(),
+                FileUpload::make('gambar'),
                 TextInput::make('deskripsi')->nullable(),
             ]);
     }

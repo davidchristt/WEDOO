@@ -1,3 +1,3 @@
-<div>
-    {{-- If your happiness depends on money, you will never be happy with yourself. --}}
+<div style="padding-left: 179px;">
+    <h1>INI MC</h1>
 </div>

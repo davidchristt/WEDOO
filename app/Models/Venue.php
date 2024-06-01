@@ -3,8 +3,9 @@
 // app/Models/Venue.php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Venue extends Model
 {
@@ -17,6 +18,7 @@ class Venue extends Model
     protected $fillable = [
         'id_venue',
         'id_gedung',
+        'gambar',
         'alamat',
         'biaya',
         'tipe',
@@ -27,6 +29,26 @@ class Venue extends Model
     public function gedung()
     {
         return $this->belongsTo(Gedung::class, 'id_gedung', 'id_gedung');
+    }
+
+    public function generateCustomId()
+    {
+        $prefix = 'VNE';
+        $length = 2;
+
+        do {
+            DB::beginTransaction();
+
+            $lastRecord = DB::table('vendors')->lockForUpdate()->orderBy('id_vendor', 'desc')->first();
+            $lastIdNumber = $lastRecord ? intval(substr($lastRecord->id_vendor, strlen($prefix))) : 0;
+            $newIdNumber = $lastIdNumber + 1;
+            $newId = $prefix . str_pad($newIdNumber, $length, '0', STR_PAD_LEFT);
+
+            DB::commit();
+
+        } while (self::where('id_vendor', $newId)->exists());
+
+        return $newId;
     }
 }
 

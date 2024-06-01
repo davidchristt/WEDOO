@@ -1,12 +1,13 @@
 <div>
     <style>
         .navbar-bg {
+            position: relative;
             background-color: #D9D9D9; /* Light grey color */
         }
     </style>
 
     <!-- Navbar start -->
-    <nav class="navbar-bg fixed top-0 z-50 w-full p-4 shadow-md">
+    <nav class="navbar-bg sticky top-0 z-50 w-full p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
                 <div class="text-3xl font-bold text-black mr-6">
@@ -39,42 +40,42 @@
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/souvenir">
                             <span class="select-none">Souvenir</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/venue">
                             <span class="select-none">Venue</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/catering">
                             <span class="select-none">Catering</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/dokumentasi">
                             <span class="select-none">Dokumentasi</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/entertainment">
                             <span class="select-none">Entertainment</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/dekorasi">
                             <span class="select-none">Dekorasi</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/mc">
                             <span class="select-none">MC</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="#link1">
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/perias">
                             <span class="select-none">Perias</span>
                         </a>
                     </li>
@@ -85,9 +86,4 @@
     </div>
     <!-- Sidebar end -->
 
-    <script>
-        document.getElementById('btnSidebarToggler').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        });
-    </script>
 </div>

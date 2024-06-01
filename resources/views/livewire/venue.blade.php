@@ -1,3 +1,3 @@
-<div>
-    {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
+<div style="padding-left: 179px;">
+    <h1>INI VENUE</h1>
 </div>

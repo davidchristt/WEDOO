@@ -11,6 +11,7 @@ class CreateVendorsTable extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->char('id_vendor', 36)->primary();
+            $table->string('nama');
             $table->char('id_venue', 36);
             $table->char('id_souvenir', 36);
             $table->char('id_penghulu', 36);

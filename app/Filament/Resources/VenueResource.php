@@ -8,37 +8,39 @@ use App\Models\Venue;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\VenueResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\VenueResource\Pages\EditVenue;
-use App\Filament\Resources\VenueResource\Pages\ListVenues;
 use App\Filament\Resources\VenueResource\RelationManagers;
-use App\Filament\Resources\VenueResource\Pages\CreateVenue;
 
 class VenueResource extends Resource
 {
-    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
     protected static ?string $model = Venue::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('id_venue')->required(),
-                Select::make('id_gedung')
-                    ->label('Gedung')
-                    ->relationship('gedung', 'nama_gedung')
-                    ->required(),
-                TextInput::make('alamat')->required(),
-                TextInput::make('biaya')->numeric()->required(),
-                TextInput::make('tipe')->required(),
-                Textarea::make('deskripsi')->nullable(),
-                TextInput::make('kota')->required(),
+                Forms\Components\TextInput::make('id_gedung')
+                    ->required()
+                    ->maxLength(36),
+                Forms\Components\TextInput::make('alamat')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('biaya')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('tipe')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('deskripsi')
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('kota')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -46,26 +48,46 @@ class VenueResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id_venue')->sortable(),
-                TextColumn::make('gedung.nama_gedung')->label('Gedung')->sortable(),
-                TextColumn::make('alamat')->sortable(),
-                TextColumn::make('biaya')->sortable(),
-                TextColumn::make('tipe')->sortable(),
-                TextColumn::make('kota')->sortable(),
+                Tables\Columns\TextColumn::make('id_venue')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('id_gedung')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('biaya')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tipe')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kota')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
@@ -77,4 +99,3 @@ class VenueResource extends Resource
         ];
     }
 }
-

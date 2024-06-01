@@ -24,6 +24,8 @@ use App\Filament\Resources\VendorResource\RelationManagers;
 use App\Filament\Resources\VendorResource\Pages\ListVendors;
 use App\Filament\Resources\VendorResource\Pages\CreateVendor;
 
+use function Laravel\Prompts\text;
+
 class VendorResource extends Resource
 {
     protected static ?string $model = Vendor::class;
@@ -37,6 +39,7 @@ class VendorResource extends Resource
                 TextInput::make('id_vendor')
                     ->required()
                     ->maxLength(10),
+                TextInput::make('nama')->required(),
                 Select::make('id_venue')
                     ->relationship('venue', 'id_venue')
                     ->required(),
