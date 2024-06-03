@@ -30,5 +30,9 @@
             </div>
         </div>
     </nav>
+    <!-- end navbar -->
+        
+    <!-- hero section -->
+
 </body>
 </html>
