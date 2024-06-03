@@ -7,14 +7,18 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Dokumentasi;
+use Filament\Support\RawJs;
 use Filament\Resources\Resource;
 use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Pages\Actions\EditAction;
 use Filament\Pages\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,14 +39,31 @@ class DokumentasiResource extends Resource
     {
         return $form
         ->schema([
-            TextInput::make('nama')->required(),
-            TextInput::make('kamera')->required(),
-            TextInput::make('kontak')->required(),
-            TextInput::make('biaya')->numeric()->required(),
-            Select::make('ketersediaan')
-                ->required()
-                ->options(Dokumentasi::KETERSEDIAAN_OPSI),
-            TextInput::make('deskripsi')->nullable(),
+            Card::make()
+                ->schema([
+                    TextInput::make('nama')->required(),
+                    TextInput::make('kamera')->required()
+                    ->datalist([
+                        'Cannon',
+                        'Sony',
+                        'Nikon',
+                        'Fujifilm',
+                        'panasonic',
+                    ]),
+                    TextInput::make('kontak')->required(),
+                    TextInput::make('biaya')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                    ToggleButtons::make('ketersediaan')
+                    ->required()
+                    ->options(Dokumentasi::KETERSEDIAAN_OPSI)
+                    ->colors([
+                        'Tunggu' => 'info',
+                        'Habis' => 'warning',
+                        'Tersedia' => 'success',
+                    ])
+                    ->inline(),
+                        RichEditor::make('deskripsi')->nullable(),                    
+                ])
+
         ]);
     }
 
@@ -54,13 +75,13 @@ class DokumentasiResource extends Resource
             TextColumn::make('nama')->sortable()->searchable(),
             TextColumn::make('kamera')->sortable()->searchable(),
             TextColumn::make('kontak')->sortable()->searchable(),
-            TextColumn::make('biaya')->sortable(),
+            TextColumn::make('biaya')->sortable()->money('Rp.'),
             TextColumn::make('ketersediaan')
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
                                 'Tunggu' => 'gray',
-                                'habis' => 'warning',
-                                'tersedia' => 'success',
+                                'Habis' => 'warning',
+                                'Tersedia' => 'success',
                             })
         ])
             ->filters([

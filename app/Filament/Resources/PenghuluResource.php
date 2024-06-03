@@ -2,44 +2,44 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Penghulu;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Pages\Actions\ViewAction;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\PenghuluResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PenghuluResource\RelationManagers;
-use App\Filament\Resources\PenghuluResource\Pages\EditPenghulu;
-use App\Filament\Resources\PenghuluResource\Pages\ListPenghulus;
-use App\Filament\Resources\PenghuluResource\Pages\CreatePenghulu;
 
 class PenghuluResource extends Resource
 {
     protected static ?string $model = Penghulu::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationLabel = 'Penghulu';
 
     public static function form(Form $form): Form
     {
         return $form
         ->schema([
-            TextInput::make('nama')->required(),
-            TextInput::make('kontak')->required(),
-            Select::make('ketersediaan')
-                ->required()
-                ->options(Penghulu::KETERSEDIAAN_OPSI),
-            TextInput::make('deskripsi')->nullable(),
+            Card::make()
+                ->schema([
+                    TextInput::make('nama')->required(),
+                    TextInput::make('kontak')->required(),
+                    ToggleButtons::make('ketersediaan')
+                    ->required()
+                    ->options(Penghulu::KETERSEDIAAN_OPSI)
+                    ->colors([
+                        'Tunggu' => 'info',
+                        'Habis' => 'warning',
+                        'Tersedia' => 'success',
+                    ])
+                    ->inline(),
+                    RichEditor::make('deskripsi')->nullable(),                    
+                ])
         ]);
     }
 
@@ -53,9 +53,9 @@ class PenghuluResource extends Resource
             TextColumn::make('ketersediaan')
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
-                                'Tunggu' => 'gray',
-                                'habis' => 'warning',
-                                'tersedia' => 'success',
+                                'Tersedia' => 'success',
+                                'Habis' => 'warning',
+                                'Tunggu' => 'info',
                             })
         ])
             ->filters([

@@ -15,9 +15,9 @@
                 </div>
             </div>
             <ul class="hidden md:flex space-x-6 text-lg">
-                <li><a href="#" class="text-black hover:text-gray-700">HOME</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-gray-700">TRANSAKSI</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-gray-700">CONTACT</a></li>
+                <li><a wire:navigate href="/" class="text-black hover:text-gray-700">HOME</a></li>
+                <li><a href="/transaksi" class="text-gray-400 hover:text-gray-700">TRANSAKSI</a></li>
+                <li><a href="/contact" class="text-gray-400 hover:text-gray-700">CONTACT</a></li>
             </ul>
         </div>
     </nav>
@@ -77,6 +77,11 @@
                     <li>
                         <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/perias">
                             <span class="select-none">Perias</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-pink-600" href="/akomodasi">
+                            <span class="select-none">Akomodasi</span>
                         </a>
                     </li>
                 </ul>

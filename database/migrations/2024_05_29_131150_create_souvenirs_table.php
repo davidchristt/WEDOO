@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('jenis');
             $table->integer('harga');
             $table->string('ketersediaan');
-            $table->string('gambar');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });

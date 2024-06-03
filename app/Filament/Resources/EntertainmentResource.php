@@ -6,16 +6,20 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Support\RawJs;
 use App\Models\Entertainment;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -28,6 +32,7 @@ use App\Filament\Resources\EntertainmentResource\Pages\CreateEntertainment;
 class EntertainmentResource extends Resource
 {
     protected static?string $model = entertainment::class;
+    protected static ?string $navigationLabel = 'Entertainment';
 
     protected static?string $navigationIcon = 'heroicon-o-musical-note';
 
@@ -35,14 +40,23 @@ class EntertainmentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama')->required(),
-                TextInput::make('biaya')->numeric()->required(),
-                TextInput::make('kontak')->required(),
-                TextInput::make('kategori')->required(),
-                Select::make('ketersediaan')
-                    ->required()
-                    ->options(Entertainment::KETERSEDIAAN_OPSI),
-                Textarea::make('deskripsi')->nullable(),
+                Card::make()
+                    ->schema([
+                        TextInput::make('nama')->required(),
+                        TextInput::make('biaya')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                        TextInput::make('kontak')->required(),
+                        TextInput::make('kategori')->required(),
+                        ToggleButtons::make('ketersediaan')
+                        ->required()
+                        ->options(Entertainment::KETERSEDIAAN_OPSI)
+                        ->colors([
+                            'Tunggu' => 'info',
+                            'Habis' => 'warning',
+                            'Tersedia' => 'success',
+                        ])
+                        ->inline(),
+                            RichEditor::make('deskripsi')->nullable(),                        
+                    ])
             ]);
     }
 
@@ -52,15 +66,15 @@ class EntertainmentResource extends Resource
             ->columns([
                 TextColumn::make('id_entertainment')->sortable(),
                 TextColumn::make('nama')->sortable()->searchable(),
-                TextColumn::make('biaya')->sortable(),
+                TextColumn::make('biaya')->sortable()->money('Rp.'),
                 TextColumn::make('kontak')->sortable()->searchable(),
                 TextColumn::make('kategori')->sortable()->searchable(),
                 TextColumn::make('ketersediaan')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
-                    'Tunggu' => 'gray',
-                    'habis' => 'warning',
-                    'tersedia' => 'success',
+                    'Tersedia' => 'success',
+                    'Habis' => 'warning',
+                    'Tunggu' => 'info',
                 })
                 ])
             ->filters([

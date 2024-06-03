@@ -23,8 +23,8 @@ class penghulu extends Model
     ];
 
     const KETERSEDIAAN_OPSI = [
-        'tersedia' => 'Tersedia',
-        'habis' => 'Habis',
+        'Tersedia' => 'Tersedia',
+        'Habis' => 'Habis',
         'Tunggu' => 'Tunggu',
     ];
 

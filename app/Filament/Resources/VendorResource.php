@@ -31,14 +31,12 @@ class VendorResource extends Resource
     protected static ?string $model = Vendor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Vendor';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('id_vendor')
-                    ->required()
-                    ->maxLength(10),
                 TextInput::make('nama')->required(),
                 Select::make('id_venue')
                     ->relationship('venue', 'id_venue')

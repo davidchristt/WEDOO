@@ -3,6 +3,7 @@
 // app/Models/Vendor.php
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -67,6 +68,41 @@ class Vendor extends Model
     public function perias()
     {
         return $this->belongsTo(perias::class, 'id_perias');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id_vendor)) {
+                $model->id_vendor = $model->generateCustomId();
+            }
+        });
+    }
+
+    public function generateCustomId()
+    {
+        $prefix = 'VNDR';
+        $length = 2;
+
+        do {
+            DB::beginTransaction();
+
+            try {
+                $lastRecord = DB::table('vendors')->lockForUpdate()->orderBy('id_vendor', 'desc')->first();
+                $lastIdNumber = $lastRecord ? intval(substr($lastRecord->id_vendor, strlen($prefix))) : 0;
+                $newIdNumber = $lastIdNumber + 1;
+                $newId = $prefix . str_pad($newIdNumber, $length, '0', STR_PAD_LEFT);
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        } while (self::where('id_vendor', $newId)->exists());
+
+        return $newId;
     }
 }
 

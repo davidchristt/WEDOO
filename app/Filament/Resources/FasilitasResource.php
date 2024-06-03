@@ -8,9 +8,11 @@ use Filament\Forms\Form;
 use App\Models\Fasilitas;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FasilitasResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -28,12 +30,22 @@ class FasilitasResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama_fasilitas')->required(),
-                TextInput::make('luas')->numeric()->required(),
-                TextInput::make('kapasitas')->numeric()->required(),
-                Textarea::make('deskripsi')->nullable(),
+                Card::make()
+                    ->schema([
+                        TextInput::make('nama_fasilitas')->required(),
+                        TextInput::make('luas')
+                            ->numeric()
+                            ->required()
+                            ->suffix('M')
+                            ->columnSpan(1),  // Atur lebar kolom menjadi lebih kecil
+                        TextInput::make('kapasitas')
+                            ->numeric()
+                            ->required(),
+                        RichEditor::make('deskripsi')->nullable(),                        
+                    ])
             ]);
     }
+    
 
     public static function table(Table $table): Table
     {

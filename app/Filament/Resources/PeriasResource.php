@@ -2,25 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Perias;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Support\RawJs;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Pages\Actions\EditAction;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\PeriasResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PeriasResource\Pages\EditPerias;
-use App\Filament\Resources\PeriasResource\Pages\ListPerias;
-use App\Filament\Resources\PeriasResource\RelationManagers;
-use App\Filament\Resources\PeriasResource\Pages\CreatePerias;
+
 
 class PeriasResource extends Resource
 {
@@ -32,13 +26,22 @@ class PeriasResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama')->required(),
-                TextInput::make('kontak')->required(),
-                TextInput::make('biaya')->numeric()->required(),
-                Select::make('ketersediaan')
-                    ->required()
-                    ->options(perias::KETERSEDIAAN_OPSI),
-                TextInput::make('deskripsi')->nullable(),
+                Card::make()
+                    ->schema([
+                        TextInput::make('nama')->required(),
+                        TextInput::make('kontak')->required(),
+                        TextInput::make('biaya')->required()->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                        ToggleButtons::make('ketersediaan')
+                        ->required()
+                        ->options(Perias::KETERSEDIAAN_OPSI)
+                        ->colors([
+                            'Tunggu' => 'info',
+                            'Habis' => 'warning',
+                            'Tersedia' => 'success',
+                        ])
+                        ->inline(),
+                        RichEditor::make('deskripsi')->nullable(),                        
+                    ])
             ]);
     }
 
@@ -49,13 +52,13 @@ class PeriasResource extends Resource
                 TextColumn::make('id_perias')->sortable(),
                 TextColumn::make('nama')->sortable()->searchable(),
                 TextColumn::make('kontak')->sortable()->searchable(),
-                TextColumn::make('biaya')->sortable(),
+                TextColumn::make('biaya')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
                 TextColumn::make('ketersediaan')
                                 ->badge()
                                 ->color(fn (string $state): string => match ($state) {
-                                    'Tunggu' => 'gray',
-                                    'habis' => 'warning',
-                                    'tersedia' => 'success',
+                                    'Tersedia' => 'success',
+                                    'Habis' => 'warning',
+                                    'Tunggu' => 'info',
                                 })
             ])
             ->filters([

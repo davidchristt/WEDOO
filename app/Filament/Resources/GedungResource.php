@@ -8,6 +8,7 @@ use App\Models\Gedung;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -24,19 +25,23 @@ class GedungResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $model = Gedung::class;
+    protected static ?string $navigationLabel = 'Gedung';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama_gedung')->required(),
-                TextInput::make('luas')->numeric()->required(),
-                TextInput::make('kapasitas')->numeric()->required(),
-                TextInput::make('kapasitas_parkir')->numeric()->required(),
-                TextInput::make('link_denah')->nullable(),
-                MultiSelect::make('fasilitas')
-                    ->relationship('fasilitas', 'nama_fasilitas')
-                    ->required(),
+                Card::make()
+                    ->schema([
+                        TextInput::make('nama_gedung')->required()->columnSpan(6),
+                        TextInput::make('luas')->numeric()->required()->columnSpan(2)->suffix('M'),
+                        TextInput::make('kapasitas')->numeric()->required()->columnSpan(2)->suffix('Orang'),
+                        TextInput::make('kapasitas_parkir')->numeric()->required()->columnSpan(2)->suffix('Kendaraan'),
+                        MultiSelect::make('fasilitas')->columnSpan(3)
+                            ->relationship('fasilitas', 'nama_fasilitas')
+                            ->required(),                      
+                        TextInput::make('link_denah')->nullable()->columnSpan(3),
+                    ])->columns(6),
             ]);
     }
 

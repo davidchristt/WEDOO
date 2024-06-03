@@ -2,41 +2,46 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Souvenir;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Support\RawJs;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\SouvenirResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SouvenirResource\RelationManagers;
-use App\Filament\Resources\SouvenirResource\Pages\EditSouvenir;
-use App\Filament\Resources\SouvenirResource\Pages\ListSouvenirs;
-use App\Filament\Resources\SouvenirResource\Pages\CreateSouvenir;
+
 
 class SouvenirResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
     protected static ?string $model = Souvenir::class;
+    protected static ?string $navigationLabel = 'Souvenir';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama')->required(),
-                TextInput::make('jenis')->required(),
-                TextInput::make('harga')->numeric()->required(),
-                Select::make('ketersediaan')
-                    ->options(Souvenir::KETERSEDIAAN_OPSI)
-                    ->required(),
-                FileUpload::make('gambar'),
-                TextInput::make('deskripsi')->nullable(),
+                Card::make()
+                    ->schema([
+                        TextInput::make('nama')->required(),
+                        TextInput::make('jenis')->required(),
+                        TextInput::make('harga')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                        ToggleButtons::make('ketersediaan')
+                        ->required()
+                        ->options(Souvenir::KETERSEDIAAN_OPSI)
+                        ->colors([
+                            'Tunggu' => 'info',
+                            'Habis' => 'warning',
+                            'Tersedia' => 'success',
+                        ])
+                        ->inline(),
+                        RichEditor::make('deskripsi')->nullable(),                        
+                    ])
             ]);
     }
 
@@ -47,13 +52,13 @@ class SouvenirResource extends Resource
                 TextColumn::make('id_Souvenir')->sortable(),
                 TextColumn::make('nama')->sortable()->searchable(),
                 TextColumn::make('jenis')->sortable()->searchable(),
-                TextColumn::make('harga')->sortable(),
+                TextColumn::make('harga')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
                 TextColumn::make('ketersediaan')
                                 ->badge()
                                 ->color(fn (string $state): string => match ($state) {
-                                    'Tunggu' => 'gray',
-                                    'habis' => 'warning',
-                                    'tersedia' => 'success',
+                                    'Tersedia' => 'success',
+                                    'Habis' => 'warning',
+                                    'Tunggu' => 'info',
                                 })
             ])
             ->filters([

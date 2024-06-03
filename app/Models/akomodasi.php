@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class akomodasi extends Model
+class akomodasi extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
 
     protected $primaryKey = 'id_akomodasi';
@@ -24,8 +27,8 @@ class akomodasi extends Model
     ];
 
     const KETERSEDIAAN_OPSI = [
-        'tersedia' => 'Tersedia',
-        'habis' => 'Habis',
+        'Tersedia' => 'Tersedia',
+        'Habis' => 'Habis',
         'Tunggu' => 'Tunggu',
     ];
 
@@ -59,4 +62,5 @@ class akomodasi extends Model
 
         return $newId;
     }
+
 }

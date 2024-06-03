@@ -7,12 +7,15 @@ use Filament\Tables;
 use App\Models\Catering;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Support\RawJs;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\DeleteAction;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -35,10 +38,13 @@ class CateringResource extends Resource
     {
         return $form
             ->schema([
+            Card::make()
+                ->schema([
                 TextInput::make('nama')->required(),
                 TextInput::make('kontak')->required(),
-                TextInput::make('biaya')->numeric()->required(),
-                TextInput::make('deskripsi')->nullable(),
+                TextInput::make('biaya')->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                RichEditor::make('deskripsi')->nullable(),               
+                ])
             ]);
     }
 
@@ -49,7 +55,7 @@ class CateringResource extends Resource
                 TextColumn::make('id_catering')->sortable(),
                 TextColumn::make('nama')->sortable()->searchable(),
                 TextColumn::make('kontak')->sortable()->searchable(),
-                TextColumn::make('biaya')->sortable(),
+                TextColumn::make('biaya')->sortable()->money('Rp.'),
             ])
             ->filters([
                 //

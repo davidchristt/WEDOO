@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar Example</title>
+    <title>WEDOO</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .navbar-bg {
@@ -23,8 +23,9 @@
             <div class="flex items-center space-x-4">
                 <ul class="hidden md:flex space-x-6 text-lg">
                     <li><a href="#" class="text-black hover:text-gray-700">HOME</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-gray-700">TRANSAKSI</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-gray-700">CONTACT</a></li>
+                    <li><a href="/transaksi" class="text-gray-400 hover:text-gray-700">TRANSAKSI</a></li>
+                    <li><a href="/contact" class="text-gray-400 hover:text-gray-700">CONTACT</a></li>
+                    <li><a href="/login" class="text-gray-400 hover:text-gray-700">LOGIN</a></li>
                 </ul>
             </div>
         </div>

@@ -24,8 +24,8 @@ class perias extends Model
     ];
 
     const KETERSEDIAAN_OPSI = [
-        'tersedia' => 'Tersedia',
-        'habis' => 'Habis',
+        'Tersedia' => 'Tersedia',
+        'Habis' => 'Habis',
         'Tunggu' => 'Tunggu',
     ];
 
@@ -48,7 +48,7 @@ class perias extends Model
         do {
             DB::beginTransaction();
 
-            $lastRecord = DB::table('periass')->lockForUpdate()->orderBy('id_perias', 'desc')->first();
+            $lastRecord = DB::table('perias')->lockForUpdate()->orderBy('id_perias', 'desc')->first();
             $lastIdNumber = $lastRecord ? intval(substr($lastRecord->id_perias, strlen($prefix))) : 0;
             $newIdNumber = $lastIdNumber + 1;
             $newId = $prefix . str_pad($newIdNumber, $length, '0', STR_PAD_LEFT);

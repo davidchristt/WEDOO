@@ -25,8 +25,8 @@ class Souvenir extends Model
     ];
 
     const KETERSEDIAAN_OPSI = [
-        'tersedia' => 'Tersedia',
-        'habis' => 'Habis',
+        'Tersedia' => 'Tersedia',
+        'Habis' => 'Habis',
         'Tunggu' => 'Tunggu',
     ];
 
@@ -35,8 +35,8 @@ class Souvenir extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->id_souvenir)) {
-                $model->id_souvenir = $model->generateCustomId();
+            if (empty($model->id_Souvenir)) {
+                $model->id_Souvenir = $model->generateCustomId();
             }
         });
     }
@@ -49,14 +49,14 @@ class Souvenir extends Model
         do {
             DB::beginTransaction();
 
-            $lastRecord = DB::table('souvenirs')->lockForUpdate()->orderBy('id_souvenir', 'desc')->first();
-            $lastIdNumber = $lastRecord ? intval(substr($lastRecord->id_souvenir, strlen($prefix))) : 0;
+            $lastRecord = DB::table('souvenirs')->lockForUpdate()->orderBy('id_Souvenir', 'desc')->first();
+            $lastIdNumber = $lastRecord ? intval(substr($lastRecord->id_Souvenir, strlen($prefix))) : 0;
             $newIdNumber = $lastIdNumber + 1;
             $newId = $prefix . str_pad($newIdNumber, $length, '0', STR_PAD_LEFT);
 
             DB::commit();
 
-        } while (self::where('id_souvenir', $newId)->exists());
+        } while (self::where('id_Souvenir', $newId)->exists());
 
         return $newId;
     }

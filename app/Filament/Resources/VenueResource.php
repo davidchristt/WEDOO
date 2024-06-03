@@ -2,45 +2,46 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Venue;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Support\RawJs;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use App\Filament\Resources\VenueResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\VenueResource\RelationManagers;
 
 class VenueResource extends Resource
 {
     protected static ?string $model = Venue::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Venues';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id_gedung')
-                    ->required()
-                    ->maxLength(36),
-                Forms\Components\TextInput::make('alamat')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('biaya')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tipe')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('deskripsi')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('kota')
-                    ->required()
-                    ->maxLength(255),
+                Card::make()
+                    ->schema([
+                    Select::make('id_gedung')
+                        ->relationship('gedung', 'nama_gedung')
+                        ->required(),
+                    TextInput::make('alamat')
+                        ->required(),
+                    TextInput::make('kota')
+                        ->required(),
+                    TextInput::make('biaya')
+                        ->prefix('RP')->required()->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric()->default(1000000),
+                    TextInput::make('tipe')
+                        ->required(),
+                    RichEditor::make('deskripsi')
+                        ->columnSpanFull(),
+                    ])
             ]);
     }
 
@@ -48,27 +49,20 @@ class VenueResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id_venue')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('id_gedung')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alamat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('biaya')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tipe')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kota')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    TextColumn::make('id_venue')
+                        ->searchable(),
+                    TextColumn::make('id_gedung')
+                        ->searchable(),
+                    TextColumn::make('alamat')
+                        ->searchable(),
+                    TextColumn::make('kota')
+                        ->searchable(),
+                    TextColumn::make('tipe')
+                        ->searchable(),
+                    TextColumn::make('biaya')
+                        ->sortable()
+                        ->numeric()
+                        ->money('Rp.'),                        
             ])
             ->filters([
                 //
