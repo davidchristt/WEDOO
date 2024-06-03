@@ -26,6 +26,7 @@
                     <li><a href="/transaksi" class="text-gray-400 hover:text-gray-700">TRANSAKSI</a></li>
                     <li><a href="/contact" class="text-gray-400 hover:text-gray-700">CONTACT</a></li>
                     <li><a href="/login" class="text-gray-400 hover:text-gray-700">LOGIN</a></li>
+                    <li><a href="/login" class="text-gray-400 hover:text-gray-700">Test</a></li>
                 </ul>
             </div>
         </div>
