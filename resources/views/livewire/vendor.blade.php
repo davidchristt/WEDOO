@@ -31,8 +31,10 @@
         </div>
     </nav>
     <!-- end navbar -->
-        
-    <!-- hero section -->
+
+    <!-- hero section-->
+
+    <!-- end hero section -->
 
 </body>
 </html>
